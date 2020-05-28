@@ -20,7 +20,7 @@ export const Container = styled.div<ContainerProps>`
     margin-top: 8px;
   }
 
-  ${(props) =>
+  ${props =>
     props.isFocused &&
     css`
       color: #ff9000;
