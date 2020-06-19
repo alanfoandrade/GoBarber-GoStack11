@@ -4,15 +4,20 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from './CreateUserService';
 
-describe('CreateUser', () => {
-  it('should be able to create a new user', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
 
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
+describe('CreateUser', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+  });
+
+  it('should be able to create a new user', async () => {
+    const generateHash = jest.spyOn(fakeHashProvider, 'generateHash');
 
     const user = await createUser.execute({
       name: 'Test User',
@@ -20,25 +25,18 @@ describe('CreateUser', () => {
       password: '123123123',
     });
 
+    expect(generateHash).toHaveBeenCalledWith('123123123');
     expect(user).toHaveProperty('id');
   });
 
-  it('should not be able to create a new user with same email form another', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
-
+  it('should not be able to create a new user with same email from another', async () => {
     await createUser.execute({
       name: 'Test User',
       email: 'testmail@user.com',
       password: '123123123',
     });
 
-    expect(
+    await expect(
       createUser.execute({
         name: 'Test User',
         email: 'testmail@user.com',

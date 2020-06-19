@@ -4,16 +4,22 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import AuthenticateUserService from './AuthenticateUserService';
 
-describe('AuthtenticateUser', () => {
-  it('should be able to authenticate', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let authtenticateUser: AuthenticateUserService;
 
-    const authtenticateUser = new AuthenticateUserService(
+describe('AuthtenticateUser', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    authtenticateUser = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider,
     );
+  });
 
+  it('should be able to authenticate', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Test User',
       email: 'testmail@user.com',
@@ -30,15 +36,7 @@ describe('AuthtenticateUser', () => {
   });
 
   it('should not be able to authenticate with non existing user', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const authtenticateUser = new AuthenticateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
-
-    expect(
+    await expect(
       authtenticateUser.execute({
         email: 'testmail@user.com',
         password: '123123123',
@@ -47,21 +45,13 @@ describe('AuthtenticateUser', () => {
   });
 
   it('should not be able to authenticate with wrong password', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const authtenticateUser = new AuthenticateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
-
     await fakeUsersRepository.create({
       name: 'Test User',
       email: 'testmail@user.com',
       password: '123123123',
     });
 
-    expect(
+    await expect(
       authtenticateUser.execute({
         email: 'testmail@user.com',
         password: '123',
