@@ -18,7 +18,7 @@ profileRouter.put(
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      old_password: Joi.string().email(),
+      old_password: Joi.string(),
       // TODO: PROXIMOS CAMPOS REQUIRED QUANDO OLD_PASSWORD TIVER PREENCHIDO
       password: Joi.string(),
       password_confirmation: Joi.string().valid(Joi.ref('password')),

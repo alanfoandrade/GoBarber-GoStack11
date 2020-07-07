@@ -26,12 +26,12 @@ export default class CreateUserTokens1592508113854
           },
           {
             name: 'created_at',
-            type: 'timestamptz',
+            type: 'timestamp with time zone',
             default: 'now()',
           },
           {
             name: 'updated_at',
-            type: 'timestamptz',
+            type: 'timestamp with time zone',
             default: 'now()',
           },
         ],
