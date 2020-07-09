@@ -24,7 +24,7 @@ import logoImg from '../../assets/logo.png';
 
 import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
 
-interface SignUpFormData {
+interface ISignUpFormData {
   name: string;
   email: string;
   password: string;
@@ -38,7 +38,7 @@ const SignUp: React.FC = () => {
   const navigation = useNavigation();
 
   const handleSignUp = useCallback(
-    async (data: SignUpFormData) => {
+    async (data: ISignUpFormData) => {
       try {
         formRef.current?.setErrors({});
 
@@ -89,7 +89,7 @@ const SignUp: React.FC = () => {
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
         >
           <Container>
             <Image source={logoImg} />

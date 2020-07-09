@@ -34,7 +34,7 @@ import {
   CreateAccountText,
 } from './styles';
 
-interface SignInFormData {
+interface ISignInFormData {
   email: string;
   password: string;
 }
@@ -48,7 +48,7 @@ const SignIn: React.FC = () => {
   const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
+    async (data: ISignInFormData) => {
       try {
         formRef.current?.setErrors({});
 
@@ -94,7 +94,7 @@ const SignIn: React.FC = () => {
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
         >
           <Container>
             <Image source={logoImg} />
@@ -129,7 +129,9 @@ const SignIn: React.FC = () => {
               />
 
               <Button
+                testID="signin-button"
                 onPress={() => {
+                  console.log('APERTOU BOTAO');
                   formRef.current?.submitForm();
                 }}
               >
@@ -138,6 +140,7 @@ const SignIn: React.FC = () => {
             </Form>
             <ForgotPassword
               onPress={() => {
+                // eslint-disable-next-line no-console
                 console.log('Esqueceu a senha');
               }}
             >

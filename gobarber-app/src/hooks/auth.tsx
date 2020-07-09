@@ -8,26 +8,36 @@ import React, {
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
-interface AuthState {
-  token: string;
-  user: Record<string, unknown>;
+interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
 }
 
-interface SignInCredentials {
+interface IAuthState {
+  token: string;
+  user: IUser;
+}
+
+interface ISignInCredentials {
   email: string;
   password: string;
 }
 
-interface AuthContextData {
-  user: Record<string, unknown>;
-  signIn(credentials: SignInCredentials): Promise<void>;
+interface IAuthContextData {
+  user: IUser;
+  loading: boolean;
+  signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: IUser): Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [data, setData] = useState<AuthState>({} as AuthState);
+  const [data, setData] = useState<IAuthState>({} as IAuthState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStoragedData(): Promise<void> {
@@ -37,8 +47,12 @@ const AuthProvider: React.FC = ({ children }) => {
       ]);
 
       if (token[1] && user[1]) {
+        api.defaults.headers.authorization = `Bearer ${token[1]}`;
+
         setData({ token: token[1], user: JSON.parse(user[1]) });
       }
+
+      setLoading(false);
     }
 
     loadStoragedData();
@@ -57,23 +71,36 @@ const AuthProvider: React.FC = ({ children }) => {
       ['@GoBarber:user', JSON.stringify(user)],
     ]);
 
+    api.defaults.headers.authorization = `Bearer ${token}`;
+
     setData({ token, user });
   }, []);
 
   const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove(['@GoBarber:token', '@GoBarber:user']);
 
-    setData({} as AuthState);
+    setData({} as IAuthState);
+  }, []);
+
+  const updateUser = useCallback(async (user: IUser) => {
+    AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    setData((prev) => ({
+      token: prev.token,
+      user,
+    }));
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, loading, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-function useAuth(): AuthContextData {
+function useAuth(): IAuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
