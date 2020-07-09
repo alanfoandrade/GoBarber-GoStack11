@@ -13,7 +13,9 @@ interface IRequest {
 
 @injectable()
 class SendForgotPasswordEmailService {
-  public key: string;
+  get key(): string {
+    return 'ForgotPasswordEmail';
+  }
 
   constructor(
     @inject('UsersRepository')
@@ -24,9 +26,7 @@ class SendForgotPasswordEmailService {
 
     @inject('UserTokensRepository')
     private userTokensRepository: IUserTokensRepository,
-  ) {
-    this.key = 'ForgotPasswordEmail';
-  }
+  ) {}
 
   public async execute({ email }: IRequest): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
