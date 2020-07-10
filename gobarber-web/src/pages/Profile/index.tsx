@@ -55,6 +55,21 @@ const Profile: React.FC = () => {
                     .required('Confirmação de senha requerida')
                 : field,
           ),
+          // OUTRA FORMA DE FAZER ESSA VALIDAÇÃO
+          // old_password: Yup.string().when('password', {
+          //   is: val => !!val.length,
+          //   then: Yup.string().required('Senha antiga requerida'),
+          //   otherwise: Yup.string(),
+          // }),
+          // password: Yup.string(),
+          // password_confirmation: Yup.string().when('password', {
+          //   is: val => !!val.length,
+          //   then: Yup.string()
+          //     .oneOf([Yup.ref('password')], 'Senhas não coincidem')
+          //     .min(6, 'Mínimo 6 caracteres')
+          //     .required('Confirmação de senha requerida'),
+          //   otherwise: Yup.string(),
+          // }),
         });
 
         await schema.validate(data, {

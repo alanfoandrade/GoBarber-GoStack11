@@ -3,8 +3,8 @@ import Queue, { Queue as BullClient } from 'bull';
 import queueConfig from '@config/queue';
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 
-import MailProvider from '../../MailProvider/implementations/EtherealMailProvider';
 import MailTemplateProvider from '../../MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
+import MailProvider from '../../MailProvider/implementations/EtherealMailProvider';
 
 import IQueueProvider from '../models/IQueueProvider';
 import IQueueJobDTO from '../dtos/IQueueJobDTO';
