@@ -1,9 +1,10 @@
+import 'reflect-metadata';
 import 'dotenv/config';
 
 import { container } from 'tsyringe';
 
-import QueueProvider from '@shared/container/providers/QueueProvider/implementations/BullQueueProvider';
+import BullQueueProvider from '@shared/container/providers/QueueProvider/implementations/BullQueueProvider';
 
-const queueProvider = container.resolve(QueueProvider);
+const queue = container.resolve(BullQueueProvider);
 
-queueProvider.process();
+queue.processQueue();

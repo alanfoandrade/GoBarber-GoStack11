@@ -2,7 +2,7 @@ import { uuid } from 'uuidv4';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import IFindAllProvidersDto from '../../dtos/IFindAllProvidersDTO';
+import IFindAllProvidersDTO from '../../dtos/IFindAllProvidersDTO';
 
 import User from '../../infra/typeorm/entities/User';
 
@@ -23,7 +23,7 @@ class FakeUsersRepository implements IUsersRepository {
 
   public async findAllProviders({
     except_user_id,
-  }: IFindAllProvidersDto): Promise<User[]> {
+  }: IFindAllProvidersDTO): Promise<User[]> {
     let { users } = this;
 
     if (except_user_id) {

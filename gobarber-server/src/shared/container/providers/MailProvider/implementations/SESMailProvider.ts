@@ -6,7 +6,7 @@ import { injectable, inject } from 'tsyringe';
 import mailConfig from '@config/mail';
 
 import IMailProvider from '../models/IMailProvider';
-import ISendMailDto from '../dtos/ISendMailDTO';
+import ISendMailDTO from '../dtos/ISendMailDTO';
 import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
 
 @injectable()
@@ -30,7 +30,7 @@ export default class SESMailProvider implements IMailProvider {
     from,
     subject,
     templateData,
-  }: ISendMailDto): Promise<void> {
+  }: ISendMailDTO): Promise<void> {
     const { name, email } = mailConfig.defaults.from;
 
     await this.client.sendMail({

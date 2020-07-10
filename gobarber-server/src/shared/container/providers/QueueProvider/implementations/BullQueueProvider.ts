@@ -1,19 +1,31 @@
-import Bull from 'bull';
-import { container } from 'tsyringe';
+import Queue, { Queue as BullClient } from 'bull';
 
 import queueConfig from '@config/queue';
-
 import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
-import IQueueProvider from '../models/IQueueProvider';
 
-const sendForgotPasswordEmail = container.resolve(
-  SendForgotPasswordEmailService,
+import MailProvider from '../../MailProvider/implementations/EtherealMailProvider';
+import MailTemplateProvider from '../../MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
+
+import IQueueProvider from '../models/IQueueProvider';
+import IQueueJobDTO from '../dtos/IQueueJobDTO';
+
+const mailTemplateProvider = new MailTemplateProvider();
+const mailProvider = new MailProvider(mailTemplateProvider);
+const sendForgotPasswordEmail = new SendForgotPasswordEmailService(
+  mailProvider,
 );
 
 const jobs = [sendForgotPasswordEmail];
 
+interface IQueue {
+  [key: string]: {
+    client: BullClient;
+    execute(job: any): Promise<void>;
+  };
+}
+
 export default class BullQueueProvider implements IQueueProvider {
-  private queues: Record<string, any>;
+  private queues: IQueue;
 
   constructor() {
     this.queues = {};
@@ -21,24 +33,25 @@ export default class BullQueueProvider implements IQueueProvider {
     this.init();
   }
 
-  private init(): void {
+  init(): void {
     jobs.forEach(({ key, execute }) => {
       this.queues[key] = {
-        queue: new Bull(key, queueConfig.config.bull),
+        client: new Queue(key, queueConfig),
         execute,
       };
     });
   }
 
-  public async add(queue: string, job: any): Promise<void> {
-    this.queues[queue].queue.add(JSON.stringify(job));
+  public async addJob({ key, job }: IQueueJobDTO): Promise<void> {
+    await this.queues[key].client.add(job);
   }
 
-  public async process(): Promise<void> {
+  public processQueue(): void {
     jobs.forEach((job) => {
-      const { queue, execute } = this.queues[job.key];
-
-      queue.process(execute);
+      this.queues[job.key].client.process((queueJob: any) => {
+        const { data } = queueJob;
+        job.execute(data);
+      });
     });
   }
 }
