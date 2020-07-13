@@ -3,16 +3,13 @@ import { render, fireEvent, wait } from '@testing-library/react';
 
 import SignIn from '../../pages/SignIn';
 
-const mockedSignIn = jest.fn();
-
 jest.mock('react-router-dom', () => {
   return {
-    // useHistory: () => ({
-    //   push: jest.fn(),
-    // }),
     Link: ({ children }: { children: React.ReactNode }) => children,
   };
 });
+
+const mockedSignIn = jest.fn();
 
 jest.mock('../../hooks/auth', () => {
   return {

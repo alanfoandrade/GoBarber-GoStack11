@@ -24,7 +24,7 @@ describe('SendForgotPasswordEmail', () => {
   });
 
   it('should be able to recover the password using the email', async () => {
-    const createJobSpy = jest.spyOn(fakeQueueProvider, 'createJob');
+    const addJobSpy = jest.spyOn(fakeQueueProvider, 'addJob');
 
     await fakeUsersRepository.create({
       name: 'Test User',
@@ -36,7 +36,7 @@ describe('SendForgotPasswordEmail', () => {
       email: 'testmail@user.com',
     });
 
-    expect(createJobSpy).toHaveBeenCalled();
+    expect(addJobSpy).toHaveBeenCalled();
   });
 
   it('should not be able to recover a non-existing user password', async () => {

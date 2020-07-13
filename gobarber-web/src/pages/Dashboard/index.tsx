@@ -1,16 +1,17 @@
+import 'react-day-picker/lib/style.css';
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { isToday, format, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import DayPicker, { DayModifiers } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
-
 import { FiPower, FiClock } from 'react-icons/fi';
-
 import { parseISO } from 'date-fns/esm';
 import { Link } from 'react-router-dom';
-import logoImg from '../../assets/logo.svg';
-import { useAuth } from '../../hooks/auth';
+
 import api from '../../services/api';
+
+import { useAuth } from '../../hooks/auth';
+
+import logoImg from '../../assets/logo.svg';
 
 import {
   Container,

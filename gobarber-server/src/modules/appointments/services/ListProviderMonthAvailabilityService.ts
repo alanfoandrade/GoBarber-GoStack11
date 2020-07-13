@@ -45,8 +45,8 @@ class ListProviderMonthAvailabilityService {
 
     const currentDate = new Date(Date.now());
 
-    const availability = eachDayArray.map(day => {
-      const appointmentsInDay = appointments.filter(appointment => {
+    const availability = eachDayArray.map((day) => {
+      const appointmentsInDay = appointments.filter((appointment) => {
         return getDate(appointment.date) === day;
       });
 
