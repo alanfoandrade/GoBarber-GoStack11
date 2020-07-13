@@ -131,7 +131,6 @@ const SignIn: React.FC = () => {
               <Button
                 testID="signin-button"
                 onPress={() => {
-                  console.log('APERTOU BOTAO');
                   formRef.current?.submitForm();
                 }}
               >

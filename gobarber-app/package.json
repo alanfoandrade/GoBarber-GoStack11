@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --watchAll false",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
@@ -35,7 +35,7 @@
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^1.0.0",
     "@testing-library/jest-native": "^3.1.0",
-    "@testing-library/react-native": "^5.0.3",
+    "@testing-library/react-hooks": "^3.3.0",
     "@types/jest": "^24.0.24",
     "@types/react-native": "^0.62.0",
     "@types/react-native-vector-icons": "^6.4.5",
@@ -57,17 +57,18 @@
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.58.0",
     "prettier": "^2.0.5",
+    "react-native-testing-library": "^2.1.0",
     "react-test-renderer": "16.11.0",
     "typescript": "^3.8.3"
   },
   "jest": {
-    "preset": "@testing-library/react-native",
+    "preset": "react-native",
+    "setupFiles": [
+      "./jest.setup.js",
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
+    ],
     "setupFilesAfterEnv": [
       "@testing-library/jest-native/extend-expect"
-    ],
-    "setupFiles": [
-      "./src/jest.setup.js",
-      "./node_modules/react-native-gesture-handler/jestSetup.js"
     ],
     "collectCoverageFrom": [
       "src/pages/**/*.tsx",

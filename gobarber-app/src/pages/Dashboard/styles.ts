@@ -45,8 +45,13 @@ export const UserAvatar = styled.Image`
   margin-left: 8px;
 `;
 
-export const ProvidersList = styled(FlatList as new () => FlatList<IProvider>)`
-  padding: 32px 24px 16px;
+export const ProvidersList = styled(
+  FlatList as new () => FlatList<IProvider>,
+).attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: { paddingBottom: 16 },
+})`
+  padding: 16px 24px;
 `;
 
 export const ProvidersListTitle = styled.Text`
