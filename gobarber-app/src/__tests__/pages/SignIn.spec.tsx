@@ -28,12 +28,22 @@ describe('SignIn Page', () => {
     mockedSignIn.mockClear();
   });
 
-  it('should be able to sign in', () => {
-    const { getByTestId } = render(<SignIn />);
+  it('should be able to sign in', async () => {
+    const { getByTestId, getByPlaceholder } = render(<SignIn />);
 
-    const buttonElement = getByTestId('signin-button');
+    const emailInput = getByPlaceholder('E-mail');
+    const passwordInput = getByPlaceholder('Senha');
+    const signinButton = getByTestId('signin-button');
 
-    fireEvent.press(buttonElement);
+    fireEvent.changeText(emailInput, {
+      target: { value: 'johndoe@example.com' },
+    });
+
+    fireEvent.changeText(passwordInput, {
+      target: { value: '123123' },
+    });
+
+    fireEvent.press(signinButton);
 
     expect(mockedSignIn).toHaveBeenCalled();
   });
