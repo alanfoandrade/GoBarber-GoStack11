@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 
+import '@shared/container/providers';
+
 import { container } from 'tsyringe';
 
 import BullQueueProvider from '@shared/container/providers/QueueProvider/implementations/BullQueueProvider';

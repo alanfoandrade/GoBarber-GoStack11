@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { errors } from 'celebrate';
@@ -30,6 +29,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     });
   }
 
+  // eslint-disable-next-line no-console
   console.error(err);
 
   return response.status(500).json({

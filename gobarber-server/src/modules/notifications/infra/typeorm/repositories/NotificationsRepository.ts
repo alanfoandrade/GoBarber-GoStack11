@@ -9,7 +9,7 @@ class NotificationsRepository implements iNotificationsRepository {
   private ormRepository: MongoRepository<Notification>;
 
   constructor() {
-    this.ormRepository = getMongoRepository(Notification, 'mongo');
+    this.ormRepository = getMongoRepository(Notification, 'gobarber-mongodb');
   }
 
   public async create({

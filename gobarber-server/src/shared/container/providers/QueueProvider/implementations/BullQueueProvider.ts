@@ -1,18 +1,15 @@
 import Queue, { Queue as BullClient } from 'bull';
 
 import queueConfig from '@config/queue';
-import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
+import { container } from 'tsyringe';
 
-import MailTemplateProvider from '../../MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
-import MailProvider from '../../MailProvider/implementations/EtherealMailProvider';
+import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPasswordEmailService';
 
 import IQueueProvider from '../models/IQueueProvider';
 import IQueueJobDTO from '../dtos/IQueueJobDTO';
 
-const mailTemplateProvider = new MailTemplateProvider();
-const mailProvider = new MailProvider(mailTemplateProvider);
-const sendForgotPasswordEmail = new SendForgotPasswordEmailService(
-  mailProvider,
+const sendForgotPasswordEmail = container.resolve(
+  SendForgotPasswordEmailService,
 );
 
 const jobs = [sendForgotPasswordEmail];
