@@ -59,11 +59,9 @@ const SignIn: React.FC = () => {
           password: Yup.string().required('Senha requerida'),
         });
 
-        console.log('ANTES DO SCHEMA VALIDATE');
         await schema.validate(data, {
           abortEarly: false,
         });
-        console.log('DEPOIS DO SCHEMA VALIDATE');
 
         await signIn({
           email: data.email,

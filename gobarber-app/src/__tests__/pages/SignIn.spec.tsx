@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from 'react-native-testing-library';
+import { render, fireEvent, waitFor } from 'react-native-testing-library';
 
 import SignIn from '../../pages/SignIn';
 
@@ -35,16 +35,14 @@ describe('SignIn Page', () => {
     const passwordInput = getByPlaceholder('Senha');
     const signinButton = getByTestId('signin-button');
 
-    fireEvent.changeText(emailInput, {
-      target: { value: 'johndoe@example.com' },
-    });
+    fireEvent.changeText(emailInput, 'johndoe@example.com');
 
-    fireEvent.changeText(passwordInput, {
-      target: { value: '123123' },
-    });
+    fireEvent.changeText(passwordInput, '123123');
 
     fireEvent.press(signinButton);
 
-    expect(mockedSignIn).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockedSignIn).toHaveBeenCalled();
+    });
   });
 });

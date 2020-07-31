@@ -8,6 +8,12 @@ import AppProvider from './hooks';
 
 import Routes from './routes';
 
+if (__DEV__) {
+  import('./config/reactotron').then(() =>
+    console.log('Reactotron Configured'),
+  );
+}
+
 const App: React.FC = () => (
   <NavigationContainer>
     <StatusBar barStyle="light-content" backgroundColor="#312e38" />

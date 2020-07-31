@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 
-import '@shared/container/providers';
+import '@shared/infra/typeorm';
+import '@shared/container';
 
 import { container } from 'tsyringe';
 
